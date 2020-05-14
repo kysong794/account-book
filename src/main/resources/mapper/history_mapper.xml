@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.song.repository.HistoryRepository">
+	<resultMap type="com.song.vo.HistoryVo" id="historyMap">
+		<result property="historyNo" column="HISTORY_NO"/>
+		<result property="regDate" column="REG_DATE"/>
+		<result property="shopName" column="SHOP_NAME"/>
+		<result property="productName" column="PRODUCT_NAME"/>
+		<result property="amount" column="AMOUNT"/>
+		<result property="price" column="PRICE"/>
+		<result property="cardNo" column="CARD_NO"/>
+		<result property="totalPrice" column="TOTAL_PRICE"/>
+		<!-- property = Vo쪽의 이름 //  column = 밑에 쓰는 컬럼에서의 이름 -->
+	</resultMap>
+	
+	<insert id="RegSave" parameterType="com.song.vo.HistoryVo">
+		INSERT INTO tb_history
+		(
+			HISTORY_NO,
+			REG_DATE,
+			SHOP_NAME,
+			PRODUCT_NAME,
+			AMOUNT,
+			PRICE,
+			CARD_NO
+		)
+		VALUES
+		(
+			#{historyNo},
+			#{regDate},
+			#{shopName},
+			#{productName},
+			#{amount},
+			#{price},
+			#{cardNo}
+		);
+	</insert>
+	
+	<!-- 이용 내역 번호 자동가져오기 -->
+	<select id="historyNo" resultType="Integer">
+		SELECT ifnull(max(history_no),0)+1 FROM tb_history
+	</select>
+	
+	<!-- 카드 사용 내역 -->
+	<select id="historyList" resultMap="historyMap">
+		SELECT
+			history_no,
+			reg_date,
+			shop_name,
+			product_name,
+			amount,
+			price,
+			card_no
+		FROM
+			tb_history
+	</select>
+	
+	<!-- 총 소비액 -->
+	<select id="totalPrice" resultType="int">
+		SELECT
+			sum(AMOUNT * PRICE) AS TOTAL_PRICE
+		FROM
+			TB_HISTORY
+	</select>
+	
+	
+</mapper>
