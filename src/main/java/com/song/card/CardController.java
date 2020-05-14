@@ -20,8 +20,7 @@ public class CardController {
 	//등록페이지 정보 가져가기
 	@GetMapping("/reg")
 	public String Reg(HttpServletRequest req) {
-		
-	
+		// 코드 수정
 		return "reg";
 	}
 
