@@ -29,7 +29,19 @@ public class HistoryService {
 		return historyRepository.historyList();
 	}
 	
-	public int totalPrice() {
+	public Integer totalPrice() {
 		return historyRepository.totalPrice();
 	}
+	
+	public Integer totalBalance() {
+		return historyRepository.totalBalance();
+	}
+	
+	public void delete(Integer historyNo) {
+		historyRepository.delete(historyNo);
+	}
+	
+//	public Integer eachBalance(Integer historyNo) {
+//		return historyRepository.eachBalance(historyNo);
+//	}
 }

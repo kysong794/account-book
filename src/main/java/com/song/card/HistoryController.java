@@ -6,9 +6,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.song.service.CardService;
 import com.song.service.HistoryService;
@@ -48,16 +50,26 @@ public class HistoryController {
 	
 	//카드 사용 내역 리스트
 	@GetMapping("/home")
-	public String historyList(HttpServletRequest req){
+	public ModelAndView historyList(ModelAndView mav){
 		
 		List<HistoryVo> historyList = historyService.historyList();
-		int totalPrice = historyService.totalPrice();
+		Integer totalPrice = historyService.totalPrice();
+		Integer totalBalance = historyService.totalBalance();
+//		Integer eachBalance = historyService.eachBalance(historyNo);
 		
-		req.setAttribute("historyList", historyList);
-		req.setAttribute("totalPrice", totalPrice);
+		mav.addObject("historyList", historyList);
+		mav.addObject("totalPrice", totalPrice);
+		mav.addObject("totalBalance", totalBalance);
+		mav.setViewName("home");
 		
-		return "home";
+		return mav;
 	}
 	
+	@PostMapping("delete")
+	public String delete(Integer historyNo) {
+		historyService.delete(historyNo);
+		
+		return "redirect:/history/home";
+	}
 	
 }

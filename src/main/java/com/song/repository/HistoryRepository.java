@@ -20,5 +20,10 @@ public interface HistoryRepository {
 
 	List<HistoryVo> historyList();
 	
-	int totalPrice();
+	Integer totalPrice();
+	
+	Integer totalBalance();
+	
+//	Integer eachBalance(Integer historyNo);
+	
 }
