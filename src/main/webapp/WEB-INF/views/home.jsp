@@ -44,15 +44,17 @@
 							<td>${ history.shopName }</td>
 							<td>${ history.productName }</td>
 							<td>${ history.amount }개</td>
-							<td><fmt:formatNumber pattern="#,###"
-									value="${ history.price }" />원</td>
-							<td></td>
+							<td><fmt:formatNumber pattern="#,###" value="${ history.price }" />원</td>
+							<c:if test="${ history.eachBalance ne null }" >
+								<td><fmt:formatNumber pattern="#,###" value="${ history.eachBalance }" />원</td>
+							</c:if>
+							<c:if test="${ history.eachBalance eq null }" >
+								<td></td>
+							</c:if>
 							<td></td>
 							<td>
 								<button class="btn btn-primary">수정</button>
-								<button id="deleteBtn"type="button" class="btn btn-danger"
-									onclick="javascript:historyDelete(${history.historyNo})">삭제</button>
-								<input type="hidden" id="historyDelete"/>
+								<button name="deleteBtn" data-no="${ history.historyNo }" type="button" class="btn btn-danger">삭제</button>
 							</td>
 						</tr>
 					</c:forEach>
@@ -62,28 +64,31 @@
 						<td>잔액 : <fmt:formatNumber pattern="#,###" value="${ totalBalance }" />원</td>
 						<td>&nbsp;</td>
 					</tr>
-					<!-- 추가 row가 여기에 들어가게 한다 -->
 				</tbody>
 			</table>
+			<input type="hidden" name="historyNo" id="historyDelete"/>
 		</form>
 	</div>
-
 	<script>
-		$("#addRow").on("click", function() {
+		$("#addRow").on("click", function(e) {
 			$("#rows").append("<tr><td><input type='text'/></td></tr>");
 		});
 		
-		function historyDelete(historyNo){
+		$("button[name=deleteBtn]").on("click", function(event) {
+			
+			var deleteBtn = event.target;
+			
 			var result = confirm("정말로 삭제 하시겠습니까?");
-				
+			
 			if(result == true){
+				var historyNo = $(deleteBtn).attr("data-no");
 				$('#historyDelete').val(historyNo);
 				
-				$('#from').submit;
-			}else{
+				$('#form').submit();
+			} else {
 					
 			}
-		}
+		})
 		
 	</script>
 </body>

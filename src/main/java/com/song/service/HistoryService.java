@@ -25,8 +25,8 @@ public class HistoryService {
 		return historyRepository.historyNo();
 	}
 	
-	public List<HistoryVo> historyList(){
-		return historyRepository.historyList();
+	public List<HistoryVo> getHistoryList(){
+		return historyRepository.getHistoryList();
 	}
 	
 	public Integer totalPrice() {
@@ -41,7 +41,4 @@ public class HistoryService {
 		historyRepository.delete(historyNo);
 	}
 	
-//	public Integer eachBalance(Integer historyNo) {
-//		return historyRepository.eachBalance(historyNo);
-//	}
 }

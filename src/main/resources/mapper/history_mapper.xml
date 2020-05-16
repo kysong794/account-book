@@ -13,6 +13,7 @@
 		<result property="price" column="PRICE"/>
 		<result property="cardNo" column="CARD_NO"/>
 		<result property="totalPrice" column="TOTAL_PRICE"/>
+		<result property="eachBalance" column="each_balance"/>
 		<!-- property = Vo쪽의 이름 //  column = 밑에 쓰는 컬럼에서의 이름 -->
 		
 	</resultMap>
@@ -46,17 +47,22 @@
 	</select>
 	
 	<!-- 카드 사용 내역 -->
-	<select id="historyList" resultMap="historyMap">
+	<select id="getHistoryList" resultMap="historyMap">
 		SELECT
-			history_no,
-			reg_date,
-			shop_name,
-			product_name,
-			amount,
-			price,
-			card_no
+			a.history_no,
+			a.reg_date,
+			a.shop_name,
+			a.product_name,
+			a.amount,
+			a.price,
+			a.card_no,
+		(
+			SELECT SUM(b.AMOUNT * b.PRICE) AS TOTAL_PRICE
+			FROM TB_HISTORY b
+			WHERE b.history_no = a.history_no
+		) AS each_balance
 		FROM
-			tb_history
+			tb_history a
 	</select>
 	
 	<!-- 총 소비액 -->
@@ -85,16 +91,5 @@
 		WHERE history_no = #{historyNo}
 	</delete>
 	
-	<!-- 각 쇼핑시의 소비액 -->
-	<select id="eachBalance" parameterMap="Integer">
-		SELECT
-			SUM(AMOUNT * PRICE) AS TOTAL_PRICE
-		FROM
-			TB_HISTORY
-		WHERE
-			history_no = #{historyNo}
-		GROUP BY
-			HISTORY_NO
-	</select>
 	
 </mapper>

@@ -24,6 +24,8 @@ public class HistoryVo {
 	// 카드 번호
 	private Integer cardNo;
 	// 총 소비액
-	private int totalPrice;
+	private Integer totalPrice;
+	// 각각 소비액
+	private Integer eachBalance;
 	
 }

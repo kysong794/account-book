@@ -12,18 +12,18 @@ public interface HistoryRepository {
 	List<HistoryVo> findAll();
 	HistoryVo findByNo(Integer historyNo);
 	void update(HistoryVo historyVo);
+	
 	void delete(Integer historyNo);
 	
 	void RegSave(HistoryVo historyVo);
 	
-	int historyNo();
+	Integer historyNo();
 
-	List<HistoryVo> historyList();
+	List<HistoryVo> getHistoryList();
 	
 	Integer totalPrice();
 	
 	Integer totalBalance();
 	
-//	Integer eachBalance(Integer historyNo);
 	
 }
