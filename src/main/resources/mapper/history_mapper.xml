@@ -14,6 +14,7 @@
 		<result property="cardNo" column="CARD_NO"/>
 		<result property="totalPrice" column="TOTAL_PRICE"/>
 		<!-- property = Vo쪽의 이름 //  column = 밑에 쓰는 컬럼에서의 이름 -->
+		
 	</resultMap>
 	
 	<insert id="RegSave" parameterType="com.song.vo.HistoryVo">
@@ -59,12 +60,41 @@
 	</select>
 	
 	<!-- 총 소비액 -->
-	<select id="totalPrice" resultType="int">
+	<select id="totalPrice" resultType="Integer">
 		SELECT
 			sum(AMOUNT * PRICE) AS TOTAL_PRICE
 		FROM
 			TB_HISTORY
 	</select>
 	
+	<!-- 잔액 -->
+	<select id="totalBalance" resultType="Integer">
+	SELECT
+		(
+		a.BALANCE - SUM(b.AMOUNT * b.PRICE)
+		)
+		AS totalbalance
+	FROM
+		tb_card a
+	INNER JOIN
+		tb_history b
+	</select>
+	
+	<delete id="delete" parameterType="Integer">
+		DELETE FROM tb_history
+		WHERE history_no = #{historyNo}
+	</delete>
+	
+	<!-- 각 쇼핑시의 소비액 -->
+	<select id="eachBalance" parameterMap="Integer">
+		SELECT
+			SUM(AMOUNT * PRICE) AS TOTAL_PRICE
+		FROM
+			TB_HISTORY
+		WHERE
+			history_no = #{historyNo}
+		GROUP BY
+			HISTORY_NO
+	</select>
 	
 </mapper>
