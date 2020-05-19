@@ -1,5 +1,6 @@
 package com.song.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,10 @@ public class CardService {
 	public List<CardVo> findAll(){
 		return cardRepository.findAll();
 	}
-
+	
+	public Date cardUseLimit() {
+		return cardRepository.cardUseLimit();
+	}
 	
 
 }

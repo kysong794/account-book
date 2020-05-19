@@ -13,11 +13,13 @@
 		<!-- property = Vo쪽의 이름 //  column = 밑에 쓰는 컬럼에서의 이름 -->
 	</resultMap>
 	
+
 	<select id="cardNo" resultType="int">
 		SELECT Max(card_no) as card_no
 		FROM tb_card
 	</select>
 	
+	<!-- 카드 테이블 전부 불러오기 -->	
 	<select id="findAll" resultMap="cardMap">
 		SELECT 
 			card_no,
@@ -28,5 +30,12 @@
 			tb_card
 	</select>
 	
+	<!-- 카드 유효기간 -->
+	<select id="cardUseLimit" resultType="date">
+		select
+			card_use_limit
+		from
+			tb_card
+	</select>
 	
 </mapper>

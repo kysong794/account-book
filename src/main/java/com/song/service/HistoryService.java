@@ -1,5 +1,6 @@
 package com.song.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.song.repository.HistoryRepository;
-import com.song.vo.CardVo;
 import com.song.vo.HistoryVo;
 
 @Service
@@ -41,4 +41,5 @@ public class HistoryService {
 		historyRepository.delete(historyNo);
 	}
 	
+
 }

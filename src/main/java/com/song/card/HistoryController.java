@@ -1,5 +1,8 @@
 package com.song.card;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -77,8 +80,35 @@ public class HistoryController {
 				// 넘어감
 			}
 		}
+
+		//가능 한가?에 대한 의문으로써 가능성의 질의
+		//cardUseLimit을 따로 select 해서 가져왔지만,
+		//원래라면 카드 번호에 맞는 cardUseLimit 값에 맞게 D-day 계산이 자동으로 맞춰지게 셋팅해야함
+		//현재 못한 이유 리스트에서 cardUseLimit만 빼오는법 몰라서 ㅠㅠ
+		//지금의 D-day 셋팅값은 어떤 카드를 선택해도 1번 카드에대한 cardUseLimit 값만 가져오게됨
 		
-		mav.addObject("findAll",findAll);
+		try {
+			
+			SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd");
+			Date now = new Date();
+			Date cardUseLimit = cardService.cardUseLimit();
+			
+			String nowTime = sdf.format(now);
+			String cardUseLimit01 = sdf.format(cardUseLimit);
+
+			Date now00 = sdf.parse(nowTime);		
+			Date cardUseLimit00 = sdf.parse(cardUseLimit01);
+			
+			long d_day = (cardUseLimit00.getTime() - now00.getTime()) / (24 * 60 * 60 * 1000);
+			
+			mav.addObject("d_day", d_day);
+			mav.addObject("now",now);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		mav.addObject("findAll", findAll);
 		mav.addObject("historyList", historyList);
 		mav.addObject("totalPrice", totalPrice);
 		mav.addObject("totalBalance", totalBalance);

@@ -22,9 +22,16 @@
 		
 		<div>
 			<c:forEach items="${ findAll }" var="findAll">
-			카드 유효기간 = <fmt:formatDate pattern="yyyy-MM-dd" value="${ findAll.cardUseLimit }"/>
+			카드 유효기간 = <fmt:formatDate pattern="yyyy-MM-dd" value="${ findAll.cardUseLimit }"/> 까지
 			</c:forEach>
 		</div>
+		<div>
+			현재 시간 = <fmt:formatDate pattern="yyyy-MM-dd" value="${ now }"/>
+		</div>
+		<div>
+			남은 기간 = ${ d_day }일 남았습니다.
+		</div>
+
 		
 		<form id="form" action="/history/delete" method="post">
 			<table class="table table-hover">

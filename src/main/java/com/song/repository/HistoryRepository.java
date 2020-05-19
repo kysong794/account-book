@@ -1,5 +1,6 @@
 package com.song.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -25,5 +26,5 @@ public interface HistoryRepository {
 	
 	Integer totalBalance();
 	
-	
+
 }
