@@ -56,6 +56,7 @@
 			a.amount,
 			a.price,
 			a.card_no,
+			a.AMOUNT * a.PRICE AS TOTAL_PRICE,
 		(
 			SELECT SUM(b.AMOUNT * b.PRICE) AS TOTAL_PRICE
 			FROM TB_HISTORY b
@@ -86,6 +87,7 @@
 		tb_history b
 	</select>
 	
+	<!-- 삭제 -->
 	<delete id="delete" parameterType="Integer">
 		DELETE FROM tb_history
 		WHERE history_no = #{historyNo}

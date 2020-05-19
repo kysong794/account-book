@@ -22,14 +22,14 @@
 		
 		<div>
 			<c:forEach items="${ findAll }" var="findAll">
-			카드 유효기간 = <fmt:formatDate pattern="yyyy-MM-dd" value="${ findAll.cardUseLimit }"/> 까지
+			카드 유효기간 : <fmt:formatDate pattern="yyyy-MM-dd" value="${ findAll.cardUseLimit }"/> 까지
 			</c:forEach>
 		</div>
 		<div>
-			현재 시간 = <fmt:formatDate pattern="yyyy-MM-dd" value="${ now }"/>
+			현재 시간 : <fmt:formatDate pattern="yyyy-MM-dd" value="${ now }"/>
 		</div>
 		<div>
-			남은 기간 = ${ d_day }일 남았습니다.
+			남은 기간 : ${ d_day }일 남았습니다.
 		</div>
 
 		
@@ -42,7 +42,8 @@
 						<th>사용처</th>
 						<th>내역</th>
 						<th>갯수</th>
-						<th>가격</th>
+						<th>개당 가격</th>
+						<th>합계</th>
 						<th>지출액</th>
 						<th>잔액</th>
 						<th>수정/삭제</th>
@@ -52,12 +53,12 @@
 					<c:forEach items="${ historyList }" var="history" >
 						<tr>
 							<td>${ history.historyNo }</td>
-							<td><fmt:formatDate pattern="yyyy-MM-dd"
-									value="${ history.regDate }" /></td>
+							<td><fmt:formatDate pattern="yyyy-MM-dd" value="${ history.regDate }" /></td>
 							<td>${ history.shopName }</td>
 							<td>${ history.productName }</td>
 							<td>${ history.amount }개</td>
 							<td><fmt:formatNumber pattern="#,###" value="${ history.price }" />원</td>
+							<td>${ history.totalPrice }원</td>
 							<c:if test="${ history.eachBalance ne null }" >
 								<td><fmt:formatNumber pattern="#,###" value="${ history.eachBalance }" />원</td>
 							</c:if>
@@ -86,14 +87,15 @@
 		$("#addRow").on("click", function(e) {
 			var html = '<c:forEach items="${ historyList }" var="history">'
 				html +=	'<tr>';
-				html +=		'<td><input type="number" value="${history.historyNo}"</td>';
-				html +=		'<td><input type="date" value="${ history.regDate }" /></td>';
-				html +=		'<td><input type="text" value="${ history.shopName }"></td>';
-				html +=		'<td><input type="text" value="${ history.productName }"</td>';
-				html +=		'<td><input type="text" value="${ history.amount }개"/></td>';
-				html +=		'<td><fmt:formatNumber pattern="#,###" value="${ history.price }" />원</td>';
+				html +=		'<td><input type="number" value="${history.historyNo}"/></td>';
+				html +=		'<td><input type="date" value="${ history.regDate }"/></td>';
+				html +=		'<td><input type="text" value="${ history.shopName }"/></td>';
+				html +=		'<td><input type="text" value="${ history.productName }"/></td>';
+				html +=		'<td><input type="number" value="${ history.amount }"/>개</td>';
+				html +=		'<td><input type="number" value="${ history.price }" />원</td>';
+				html +=		'<td></td>';
 				html +=		'<c:if test="${ history.eachBalance ne null }" >';
-				html +=		'	<td><fmt:formatNumber pattern="#,###" value="${ history.eachBalance }" />원</td>';
+				html +=		'	<td><fmt:formatNumber pattern="#,###" value="${ history.eachBalance }"/>원</td>';
 				html +=		'</c:if>';
 				html +=		'<c:if test="${ history.eachBalance eq null }" >';
 				html +=		'	<td></td>';
