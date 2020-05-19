@@ -58,6 +58,7 @@ public class HistoryController {
 	@GetMapping("/home")
 	public ModelAndView historyList(ModelAndView mav){
 		
+		List<CardVo> findAll = cardService.findAll();
 		List<HistoryVo> historyList = historyService.getHistoryList();
 		Integer totalPrice = historyService.totalPrice();
 		Integer totalBalance = historyService.totalBalance();
@@ -77,6 +78,7 @@ public class HistoryController {
 			}
 		}
 		
+		mav.addObject("findAll",findAll);
 		mav.addObject("historyList", historyList);
 		mav.addObject("totalPrice", totalPrice);
 		mav.addObject("totalBalance", totalBalance);

@@ -12,13 +12,20 @@
 	<div class="container">
 
 		<select class="form-control">
-			<c:forEach items="${ cards }" var="card">
+			<c:forEach items="${ findAll }" var="card">
 				<option value="${ card.cardNo }">${ card.cardName }</option>
 			</c:forEach>
 		</select>
 
 		<!-- Row(행)을 추가 -->
 		<button id="addRow" class="btn btn-primary">추가</button>
+		
+		<div>
+			<c:forEach items="${ findAll }" var="findAll">
+			카드 유효기간 = <fmt:formatDate pattern="yyyy-MM-dd" value="${ findAll.cardUseLimit }"/>
+			</c:forEach>
+		</div>
+		
 		<form id="form" action="/history/delete" method="post">
 			<table class="table table-hover">
 				<thead>
@@ -33,13 +40,12 @@
 						<th>잔액</th>
 						<th>수정/삭제</th>
 					</tr>
-
 				</thead>
 				<tbody id="rows">
-					<c:forEach items="${ historyList }" var="history">
+					<c:forEach items="${ historyList }" var="history" >
 						<tr>
 							<td>${ history.historyNo }</td>
-							<td><fmt:formatDate pattern="yyyy/MM/dd"
+							<td><fmt:formatDate pattern="yyyy-MM-dd"
 									value="${ history.regDate }" /></td>
 							<td>${ history.shopName }</td>
 							<td>${ history.productName }</td>
@@ -71,7 +77,25 @@
 	</div>
 	<script>
 		$("#addRow").on("click", function(e) {
-			$("#rows").append("<tr><td><input type='text'/></td></tr>");
+			var html = '<c:forEach items="${ historyList }" var="history">'
+				html +=	'<tr>';
+				html +=		'<td><input type="number" value="${history.historyNo}"</td>';
+				html +=		'<td><input type="date" value="${ history.regDate }" /></td>';
+				html +=		'<td><input type="text" value="${ history.shopName }"></td>';
+				html +=		'<td><input type="text" value="${ history.productName }"</td>';
+				html +=		'<td><input type="text" value="${ history.amount }개"/></td>';
+				html +=		'<td><fmt:formatNumber pattern="#,###" value="${ history.price }" />원</td>';
+				html +=		'<c:if test="${ history.eachBalance ne null }" >';
+				html +=		'	<td><fmt:formatNumber pattern="#,###" value="${ history.eachBalance }" />원</td>';
+				html +=		'</c:if>';
+				html +=		'<c:if test="${ history.eachBalance eq null }" >';
+				html +=		'	<td></td>';
+				html +=		'</c:if>';
+				html +=		'<td></td>';
+				html +=		'</tr>';
+				html +='</c:forEach>';
+			
+			$("#rows").append(html);
 		});
 		
 		$("button[name=deleteBtn]").on("click", function(event) {
@@ -89,7 +113,9 @@
 					
 			}
 		})
-		
+
+
 	</script>
+
 </body>
 </html>
