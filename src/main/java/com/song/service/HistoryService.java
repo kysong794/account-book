@@ -1,6 +1,5 @@
 package com.song.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +18,10 @@ public class HistoryService {
 	
 	public void RegSeve(HistoryVo historyVo) {
 		historyRepository.RegSave(historyVo);
+	}
+	
+	public void bulkSave(List<HistoryVo> list) {
+		historyRepository.bulkSave(list);
 	}
 	
 	public int historyNo() {

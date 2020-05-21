@@ -14,4 +14,6 @@ public class CardVo {
 	private Integer balance;
 	// 카드 사용 기한
 	private Date cardUseLimit;
+	// 남은 일자
+	private Integer dayLeft;
 }

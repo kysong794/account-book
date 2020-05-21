@@ -38,7 +38,7 @@
 			#{amount},
 			#{price},
 			#{cardNo}
-		);
+		)
 	</insert>
 	
 	<!-- 이용 내역 번호 자동가져오기 -->
@@ -93,5 +93,27 @@
 		WHERE history_no = #{historyNo}
 	</delete>
 	
+	<insert id="bulkSave">
+		INSERT INTO tb_history
+		(
+			HISTORY_NO,
+			REG_DATE,
+			SHOP_NAME,
+			PRODUCT_NAME,
+			AMOUNT,
+			PRICE,
+			CARD_NO
+		)
+		VALUES
+		<foreach collection="list" separator="," item="vo">
+			(#{vo.historyNo},
+			#{vo.regDate},
+			#{vo.shopName},
+			#{vo.productName},
+			#{vo.amount},
+			#{vo.price},
+			#{vo.cardNo})
+		</foreach>
+	</insert>
 	
 </mapper>

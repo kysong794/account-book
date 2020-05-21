@@ -1,9 +1,9 @@
 package com.song.repository;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.song.vo.HistoryVo;
 
@@ -26,5 +26,6 @@ public interface HistoryRepository {
 	
 	Integer totalBalance();
 	
+	void bulkSave(@Param("list") List<HistoryVo> list);
 
 }

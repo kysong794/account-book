@@ -1,17 +1,20 @@
 package com.song.card;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.song.service.CardService;
@@ -19,6 +22,9 @@ import com.song.service.HistoryService;
 import com.song.vo.CardVo;
 import com.song.vo.HistoryVo;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/history")
 public class HistoryController {
@@ -51,10 +57,47 @@ public class HistoryController {
 	 * 3-1) FORM : "key=value&key=value...",
 	 * 3-2) JSON : "{key: value, key: value, ...}"
 	 */
-	@PostMapping("/RegSave")
-	public String RegSave(HistoryVo historyVo) {
-		historyService.RegSeve(historyVo);
-		return "redirect:/history/reg";
+	@ResponseBody
+	@PostMapping("/regSave")
+	public String RegSave(@RequestBody List<HistoryVo> historyVoList) {
+		boolean isValid = true;
+		for (int i = 0; i < historyVoList.size(); i++) {
+			if (!isValid(historyVoList.get(0))) {
+				isValid = false;
+				break;
+			}
+		}
+		
+		if (!isValid) {
+			return "failed";
+		}
+		
+		try {
+			historyService.bulkSave(historyVoList);
+			return "success";
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			return "failed";
+		}
+	}
+	
+	private boolean isValid(HistoryVo vo) {
+		boolean isCardNoValid = vo.getCardNo() != null;
+		boolean isHistoryNoValid = vo.getHistoryNo() != null;
+		boolean isRegDateValid = vo.getRegDate() != null;
+		boolean isShopNameValid = vo.getShopName() != null;
+		boolean isProductNameValid = vo.getProductName() != null;
+		boolean isPriceValid = vo.getPrice() > 0;
+		boolean isAmountValid = vo.getAmount() > 0;
+		
+		return isCardNoValid &&
+				isHistoryNoValid &&
+				isRegDateValid &&
+				isShopNameValid &&
+				isProductNameValid &&
+				isPriceValid &&
+				isAmountValid;
 	}
 	
 	//카드 사용 내역 리스트
@@ -81,7 +124,7 @@ public class HistoryController {
 			}
 		}
 
-		//가능 한가?에 대한 의문으로써 가능성의 질의
+		//가능 한가?에 대한 의문으로써 가능성의 질의(?)
 		//cardUseLimit을 따로 select 해서 가져왔지만,
 		//원래라면 카드 번호에 맞는 cardUseLimit 값에 맞게 D-day 계산이 자동으로 맞춰지게 셋팅해야함
 		//현재 못한 이유 리스트에서 cardUseLimit만 빼오는법 몰라서 ㅠㅠ
@@ -90,19 +133,25 @@ public class HistoryController {
 		
 		try {
 			
-			SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd");
 			Date now = new Date();
-			Date cardUseLimit = cardService.cardUseLimit();
 			
-			String nowTime = sdf.format(now);
-			String cardUseLimit01 = sdf.format(cardUseLimit);
+			for (int i = 0; i < findAll.size(); i++) {
+				CardVo card = findAll.get(0);
+				SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd");
+				Date cardUseLimit = card.getCardUseLimit();
+				
+				String nowTime = sdf.format(now);
+				String cardUseLimit01 = sdf.format(cardUseLimit);
 
-			Date now00 = sdf.parse(nowTime);		
-			Date cardUseLimit00 = sdf.parse(cardUseLimit01);
+				Date nowTime00 = sdf.parse(nowTime);		
+				Date cardUseLimit00 = sdf.parse(cardUseLimit01);
+				
+				long d_day = (cardUseLimit00.getTime() - nowTime00.getTime()) / (24 * 60 * 60 * 1000);
+				
+				card.setDayLeft((int)d_day);
+			}
 			
-			long d_day = (cardUseLimit00.getTime() - now00.getTime()) / (24 * 60 * 60 * 1000);
-			
-			mav.addObject("d_day", d_day);
+//			mav.addObject("d_day", d_day);
 			mav.addObject("now",now);
 			
 		} catch (Exception e) {

@@ -11,9 +11,10 @@
 
 	<div class="container">
 
-		<select class="form-control">
+		<select class="form-control" id="cardList">
+			<option value="">선택해 주세요</option>
 			<c:forEach items="${ findAll }" var="card">
-				<option value="${ card.cardNo }">${ card.cardName }</option>
+				<option value="${ card.cardNo }" data-dayleft="${ card.dayLeft }">${ card.cardName }</option>
 			</c:forEach>
 		</select>
 
@@ -29,7 +30,7 @@
 			현재 시간 : <fmt:formatDate pattern="yyyy-MM-dd" value="${ now }"/>
 		</div>
 		<div>
-			남은 기간 : ${ d_day }일 남았습니다.
+			남은 기간 : <span id="dayLeft">-</span>일 남았습니다.
 		</div>
 
 		
@@ -121,8 +122,18 @@
 			} else {
 					
 			}
-		})
-
+		});
+		
+		$("#cardList").on("change", function() {
+			var option = $("#cardList option:selected").get()[0];
+			var dayLeft = option.dataset["dayleft"];
+			
+			if (!dayLeft) {
+				$("#dayLeft").text("-");
+			} else {
+				$("#dayLeft").text(dayLeft);
+			}
+		});
 
 	</script>
 
