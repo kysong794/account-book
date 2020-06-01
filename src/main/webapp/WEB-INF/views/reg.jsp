@@ -45,10 +45,10 @@
 						<input type="text" name="productName" />
 					</td>
 					<td>갯수 :
-						<input type="number" name="amount" />
+						<input type="number" name="amount" min="0" />
 					</td>
 					<td>개당가격 :
-						<input type="number" name="price" />
+						<input type="number" name="price" min="0"/>
 					</td>
 					<td>
 						

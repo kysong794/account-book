@@ -14,7 +14,7 @@ public interface HistoryRepository {
 	HistoryVo findByNo(Integer historyNo);
 	void update(HistoryVo historyVo);
 	
-	void delete(Integer historyNo);
+	void delete(@Param("historyNo") Integer historyNo, @Param("productName") String productName);
 	
 	void RegSave(HistoryVo historyVo);
 	
@@ -27,5 +27,7 @@ public interface HistoryRepository {
 	Integer totalBalance();
 	
 	void bulkSave(@Param("list") List<HistoryVo> list);
+	
+	void modify(HistoryVo historyVo);
 
 }

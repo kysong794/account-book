@@ -5,11 +5,9 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -123,13 +121,6 @@ public class HistoryController {
 				// 넘어감
 			}
 		}
-
-		//가능 한가?에 대한 의문으로써 가능성의 질의(?)
-		//cardUseLimit을 따로 select 해서 가져왔지만,
-		//원래라면 카드 번호에 맞는 cardUseLimit 값에 맞게 D-day 계산이 자동으로 맞춰지게 셋팅해야함
-		//현재 못한 이유 리스트에서 cardUseLimit만 빼오는법 몰라서 ㅠㅠ
-		//지금의 D-day 셋팅값은 어떤 카드를 선택해도 1번 카드에대한 cardUseLimit 값만 가져오게됨
-		//Date -> String -> Date ??? 코드가 불필요하게 길어진건가?
 		
 		try {
 			
@@ -168,8 +159,15 @@ public class HistoryController {
 	}
 	
 	@PostMapping("delete")
-	public String delete(Integer historyNo) {
-		historyService.delete(historyNo);
+	public String delete(Integer historyNo, String productName) {
+		historyService.delete(historyNo, productName);
+		
+		return "redirect:/history/home";
+	}
+	
+	@PostMapping("/modify")
+	public String modify(HistoryVo historyVo) {
+		historyService.modify(historyVo);
 		
 		return "redirect:/history/home";
 	}

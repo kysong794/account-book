@@ -56,7 +56,7 @@
 			</div>
 		</div>
 	</nav>
-	<div id="main" class="container">
+	<div id="main" class="container-fluid">
 		<decorator:body />
 	</div>
 </body>

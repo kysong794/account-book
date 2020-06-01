@@ -88,9 +88,9 @@
 	</select>
 	
 	<!-- 삭제 -->
-	<delete id="delete" parameterType="Integer">
+	<delete id="delete">
 		DELETE FROM tb_history
-		WHERE history_no = #{historyNo}
+		WHERE history_no = #{ historyNo } and product_name = #{ productName }
 	</delete>
 	
 	<insert id="bulkSave">
@@ -106,14 +106,26 @@
 		)
 		VALUES
 		<foreach collection="list" separator="," item="vo">
-			(#{vo.historyNo},
-			#{vo.regDate},
-			#{vo.shopName},
-			#{vo.productName},
-			#{vo.amount},
-			#{vo.price},
-			#{vo.cardNo})
+			(
+				#{vo.historyNo},
+				#{vo.regDate},
+				#{vo.shopName},
+				#{vo.productName},
+				#{vo.amount},
+				#{vo.price},
+				#{vo.cardNo}
+			)
 		</foreach>
 	</insert>
+	
+	<update id="modify" parameterType="historyVo">
+		update tb_history
+		set
+			amount = #{ amount },
+			price = #{ price }
+		where
+			history_no = #{ historyNo } and
+			product_name = #{ productName }
+	</update>
 	
 </mapper>

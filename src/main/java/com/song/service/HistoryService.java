@@ -40,9 +40,12 @@ public class HistoryService {
 		return historyRepository.totalBalance();
 	}
 	
-	public void delete(Integer historyNo) {
-		historyRepository.delete(historyNo);
+	public void delete(Integer historyNo, String productName) {
+		historyRepository.delete(historyNo, productName);
 	}
 	
+	public void modify(HistoryVo historyVo) {
+		historyRepository.modify(historyVo);
+	}
 
 }
